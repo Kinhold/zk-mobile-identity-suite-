@@ -21,7 +21,9 @@ The `main.nr` file contains the Noir circuit that takes `birth_year` (private in
 
 Comprehensive unit tests are provided to cover various scenarios, including passing cases, exact boundary failures, underage failures, and future birth year failures.
 
-## Verified Command Sequence
+## Verified Command Sequence (Device-Only)
+
+**Note:** Due to sandbox SRS/memory constraints, `bb prove` and `bb verify` cannot be executed within the sandbox environment and must be run on a physical device. The following sequence has been validated on a physical device.
 
 To compile, test, generate witness, prove, and verify the circuit, follow these steps in your Termux environment after logging into `proot-distro login ubuntu` and ensuring `nargo` and `bb` are in your PATH (e.g., by adding `export PATH=$PATH:/data/data/com.termux/files/home/.bb` to your `.bashrc`):
 
@@ -33,11 +35,11 @@ nargo compile
 nargo test        # Expected: 6/6 tests pass
 nargo execute     # Generates target/age_proof.gz
 
-# 2. Generate proof + VK + public inputs in ONE command
+# 2. Generate proof + VK + public inputs in ONE command (Device-Only)
 bb prove -b target/age_proof.json -w target/age_proof.gz --write_vk -o target
 # Outputs: target/proof, target/vk, target/public_inputs, target/vk_hash
 
-# 3. Verify
+# 3. Verify (Device-Only)
 bb verify -p target/proof -k target/vk
 # Expected: "Proof verified successfully"
 ```
