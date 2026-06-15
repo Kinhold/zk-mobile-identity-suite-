@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "./Verifier.sol";
+import "./verifier.sol";
 
 contract AgeProofVerifier {
     IVerifier public immutable verifier;
