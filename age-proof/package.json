@@ -1,0 +1,16 @@
+{
+  "name": "age-proof-contracts",
+  "version": "1.0.0",
+  "description": "Hardhat project for Age Proof Verifier contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.2"
+  }
+}
