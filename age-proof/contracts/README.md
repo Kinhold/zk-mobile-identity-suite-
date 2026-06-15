@@ -15,7 +15,8 @@ This directory contains the Solidity contracts and deployment scripts for verify
 1. **Export the Verifier:**
    Run the following on your device to generate `Verifier.sol`:
    ```bash
-   bb write_solidity_verifier -k ../target/vk -o Verifier.sol
+   bb write_vk -b ../target/age_proof.json -o ../target/vk_keccak --oracle_hash keccak
+bb write_solidity_verifier -k ../target/vk_keccak/vk -o Verifier.sol
    ```
 
 2. **Setup Environment:**

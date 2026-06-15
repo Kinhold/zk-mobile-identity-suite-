@@ -45,7 +45,7 @@ nargo test        # 6/6 tests pass
 nargo execute     # generates target/age_proof.gz
 
 # Single-step: generates proof, VK, public_inputs, and vk_hash as FILES in target/
-bb prove -b target/age_proof.json -w target/age_proof.gz --write_vk -o target
+bb prove -b target/age_proof.json -w target/age_proof.gz --write_vk -o target --oracle_hash keccak
 
 # Verify
 bb verify -p target/proof -k target/vk
@@ -69,7 +69,8 @@ From your device, navigate to the `age-proof` directory and execute the followin
 ```bash
 cd ~/zk-mobile-identity-suite-/age-proof
 mkdir -p contracts
-bb write_solidity_verifier -k target/vk -o contracts/Verifier.sol
+bb write_vk -b target/age_proof.json -o target/vk_keccak --oracle_hash keccak
+bb write_solidity_verifier -k target/vk_keccak/vk -o contracts/Verifier.sol
 ```
 
 This command will generate the `Verifier.sol` contract in the `contracts/` directory, which will be used by the `AgeProofVerifier.sol` wrapper contract.
