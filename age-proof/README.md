@@ -32,14 +32,13 @@ cd ~/zk-mobile-identity-suite-/age-proof
 
 # 1. Compile and test (sandbox-safe)
 nargo compile
-nargo test        # Expected: 6/6 tests pass
-nargo execute     # Generates target/age_proof.gz
+nargo test        # 6/6 tests pass
+nargo execute     # generates target/age_proof.gz
 
-# 2. Generate proof + VK + public inputs in ONE command (Device-Only)
+# Single-step: generates proof, VK, public_inputs, and vk_hash as FILES in target/
 bb prove -b target/age_proof.json -w target/age_proof.gz --write_vk -o target
-# Outputs: target/proof, target/vk, target/public_inputs, target/vk_hash
 
-# 3. Verify (Device-Only)
+# Verify
 bb verify -p target/proof -k target/vk
 # Expected: "Proof verified successfully"
 ```
