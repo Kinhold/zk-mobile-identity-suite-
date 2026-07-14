@@ -1,15 +1,28 @@
 const hre = require("hardhat");
+const { ethers } = require("ethers");
+const { deployContract } = require("./deploy-utils");
 
 async function main() {
-  const Verifier = await hre.ethers.getContractFactory("Verifier");
-  const verifier = await Verifier.deploy();
-  await verifier.waitForDeployment();
-  console.log(`Verifier deployed to ${verifier.target}`);
+  const provider = new ethers.BrowserProvider(hre.network.provider);
+  const signer = await provider.getSigner();
 
-  const AgeProofVerifier = await hre.ethers.getContractFactory("AgeProofVerifier");
-  const ageProofVerifier = await AgeProofVerifier.deploy(verifier.target);
-  await ageProofVerifier.waitForDeployment();
-  console.log(`AgeProofVerifier deployed to ${ageProofVerifier.target}`);
+  async function deploy(contractName, args, libraries) {
+    const contract = await deployContract(
+      hre,
+      signer,
+      contractName,
+      args,
+      libraries,
+    );
+    console.log(`${contractName} deployed to ${await contract.getAddress()}`);
+    return contract;
+  }
+
+  const transcriptLibrary = await deploy("ZKTranscriptLib");
+  const verifier = await deploy("HonkVerifier", [], {
+    ZKTranscriptLib: await transcriptLibrary.getAddress(),
+  });
+  await deploy("AgeProofVerifier", [await verifier.getAddress()]);
 }
 
 main().catch((error) => {

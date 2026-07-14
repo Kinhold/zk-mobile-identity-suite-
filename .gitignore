@@ -1,0 +1,19 @@
+# JavaScript dependencies and build output
+node_modules/
+age-proof/artifacts/
+age-proof/cache/
+age-proof/coverage/
+
+# Noir output
+age-proof/target/
+
+# Local configuration and logs
+.env
+.env.*
+!.env.example
+*.log
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/

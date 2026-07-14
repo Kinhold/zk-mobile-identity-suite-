@@ -5,25 +5,25 @@ import "./verifier.sol";
 
 contract AgeProofVerifier {
     IVerifier public immutable verifier;
+    // The verification key has 10 inputs, but 8 are pairing values embedded in
+    // the proof by the generated verifier. Callers supply only the circuit's 2.
+    uint256 public constant EXPECTED_PUBLIC_INPUTS = 2;
 
     constructor(address _verifierAddress) {
+        require(_verifierAddress != address(0), "Invalid verifier address");
         verifier = IVerifier(_verifierAddress);
     }
 
-    function verifyAgeProof(bytes calldata _proof, uint256 _currentYear) public view returns (bool) {
-        // The public inputs for the age_proof circuit are [current_year, 1 (circuit output)]
-        // The circuit asserts that age >= 19. If the assertion passes, the circuit returns 1.
-        // So, we expect the second public input to be 1.
-        bytes32[] memory publicInputs = new bytes32[](2);
-        publicInputs[0] = bytes32(uint256(_currentYear));
-        publicInputs[1] = bytes32(uint256(1)); // Expected circuit output for a valid proof
+    function verifyAgeProof(bytes calldata _proof, bytes32[] calldata _publicInputs) external view returns (bool) {
+        require(_publicInputs.length == EXPECTED_PUBLIC_INPUTS, "Expected 2 public inputs");
+        return verifier.verify(_proof, _publicInputs);
+    }
 
-        bool isValid = verifier.verify(_proof, publicInputs);
-
-        // Additional check: ensure currentYear is reasonable (e.g., not in the distant past or future)
-        // This is a basic sanity check and can be expanded.
+    function buildDefaultPublicInputs(uint256 _currentYear) external pure returns (bytes32[] memory publicInputs) {
         require(_currentYear >= 2000 && _currentYear <= 2100, "Invalid current year range");
 
-        return isValid;
+        publicInputs = new bytes32[](EXPECTED_PUBLIC_INPUTS);
+        publicInputs[0] = bytes32(uint256(_currentYear));
+        publicInputs[1] = bytes32(uint256(1));
     }
 }

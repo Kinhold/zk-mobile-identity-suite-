@@ -1,16 +1,39 @@
 {
-  "name": "age-proof-contracts",
-  "version": "1.0.0",
-  "description": "Hardhat project for Age Proof Verifier contracts",
-  "main": "index.js",
+  "name": "@kinhold/age-proof",
+  "version": "0.1.0",
+  "description": "Noir age-proof circuit and Hardhat verifier package for Kinhold mobile identity",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "hardhat test",
+    "contracts:compile": "hardhat compile",
+    "contracts:test": "hardhat test",
+    "contracts:deploy:arbitrum-sepolia": "hardhat run contracts/scripts/deploy.js --network arbitrumSepolia",
+    "contracts:deploy:ethereum-sepolia": "hardhat run contracts/scripts/deploy.js --network ethereumSepolia",
+    "circuit:compile": "nargo compile",
+    "circuit:test": "nargo test",
+    "pack:check": "npm pack --dry-run"
   },
-  "keywords": [],
-  "author": "",
+  "files": [
+    "contracts/*.sol",
+    "contracts/scripts/",
+    "contracts/test/",
+    "src/",
+    "Nargo.toml",
+    "hardhat.config.js",
+    "README.md",
+    "SECURITY.md"
+  ],
+  "keywords": [
+    "kinhold",
+    "noir",
+    "zero-knowledge",
+    "identity",
+    "age-proof"
+  ],
+  "author": "Kinhold",
   "license": "MIT",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.2"
+    "dotenv": "17.4.2",
+    "ethers": "6.17.0",
+    "hardhat": "2.28.6"
   }
 }
